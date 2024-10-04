@@ -32,6 +32,17 @@ else:
     st.write(f"### Data Overview for {selected_station}")
     st.write(station_data)
 
+    # Create a pie chart for air quality readings
+    air_quality_data = station_data[['PM2.5', 'PM10', 'NO2', 'SO2']].mean()  # Calculate the mean of each pollutant
+    air_quality_data = air_quality_data[~air_quality_data.isna()]  # Exclude any NaN values
+
+    if not air_quality_data.empty:
+        st.write("### Pie Chart of Air Quality Readings")
+        fig, ax = plt.subplots()
+        ax.pie(air_quality_data, labels=air_quality_data.index, autopct='%1.1f%%', startangle=90)
+        ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        st.pyplot(fig)
+
     if 'WSPM' in station_data.columns:
         pm_columns = ['PM2.5', 'PM10']
         gas_columns = ['NO2', 'SO2']
